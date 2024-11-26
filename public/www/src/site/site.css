@@ -1,0 +1,11 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+body {
+  font-size: 1.15rem;
+}
+
+body, html {
+  height: 100%;
+  /* background-color: aqua; */
+}
