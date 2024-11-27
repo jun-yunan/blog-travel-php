@@ -12,6 +12,7 @@
             <tr>
                 <th scope="col"><input type="checkbox" class="checkBoxAll"></th>
                 <th scope="col">ID</th>
+                <th scope="col">Author</th>
                 <th scope="col">Title</th>
                 <th scope="col">Content</th>
                 <th scope="col">CreatedAt</th>
@@ -29,17 +30,18 @@
                     <tr>
                         <th scope="col"><input type="checkbox" class="selectedCheckBox"></th>
                         <td><?php echo htmlspecialchars($blog['id']); ?></td>
+                        <td><?php echo htmlspecialchars($blog['authorId']); ?></td>
                         <td><?php echo htmlspecialchars($blog['title']); ?></td>
                         <td><?php echo htmlspecialchars($blog['content']); ?></td>
                         <td><?php echo htmlspecialchars($blog['createdAt']); ?></td>
                         <td><?php echo htmlspecialchars($blog['updatedAt']); ?></td>
                         <td>
-                            <div class="dropdown">
+                            <!-- <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">Details</a></li>
-                                    <li><a class="dropdown-item" href="#">Edit blog</a></li>
+                                    <li><a class="dropdown-item" href="/update-blog?id=<?php echo $blog['id'] ?>">Edit blog</a></li>
                                     <li class="flex flex-col items-center justify-center">
                                         <form method="POST" id="form-delete-blog" class="dropdown-item text-rose-700 hover:bg-rose-200 hover:text-rose-700">
                                             <input type="text" name="id" class="hidden" value="<?php echo htmlspecialchars($blog['id']) ?>">
@@ -50,6 +52,14 @@
                                         </form>
                                     </li>
                                 </ul>
+                            </div> -->
+                            <div class="flex flex-row items-center gap-x-2 text-base font-medium">
+                                <a href="/cap-nhat-thong-tin">Add</a>|
+                                <a href="/cap-nhat-thong-tin?id=<?php echo $blog['id']; ?>">Edit</a>|
+                                <form method="POST" action="">
+                                    <input class="hidden" name="id" value=<?php echo htmlspecialchars($blog['id']) ?> />
+                                    <input type="submit" value="Delete" onclick="return confirm('Are you sure delete blog?');" class="text-rose-600" />
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -59,6 +69,20 @@
     </table>
 </div>
 
+
+<?php if (isset($_SESSION['message'])): ?>
+    <script>
+        showNotification('<?php echo $_SESSION['message'] ?>', 'success');
+        <?php unset($_SESSION['message']); ?>
+    </script>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <script>
+        showNotification('<?php echo $_SESSION['error'] ?>', 'error');
+        <?php unset($_SESSION['error']); ?>
+    </script>
+<?php endif; ?>
 
 <!-- <script>
     const selectAllCheckbox = document.querySelector('.checkBoxAll');
