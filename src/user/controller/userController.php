@@ -3,25 +3,58 @@
 namespace User;
 
 use Engine\Base;
-use Service\Database;
 
 class UserController extends Base
 {
 
-    public function login(): void
+    public function signIn(): void
     {
-        $this->output->load("user/login");
+        $this->output->loadNotHeaderFooter("user/signIn");
     }
 
-    public function register(): void
+    public function signUp(): void
     {
-        $this->output->load("user/register");
+        $this->output->loadNotHeaderFooter("user/signUp");
     }
 
     public function logout(): void
     {
         setcookie('auth', '', time() - 3600, '/');
-        setcookie('username', '', time() - 3600, '/');
-        header('Location: index.php?route=user/user/login');
+        setcookie('author', '', time() - 3600, '/');
+        header('Location: index?route=user/user/sign-in');
+        exit();
+    }
+
+    public function profile(): void
+    {
+        $data = array();
+        $user_model = new UserModel();
+
+        if (isset($_COOKIE['author']) && !empty($_COOKIE['author'])) {
+            $email = htmlspecialchars($_COOKIE['author']);
+            $data['user'] = $user_model->getUserByEmail($email);
+        }
+        $this->output->load("user/profile", $data);
+    }
+
+    public function settings(): void
+    {
+        $this->output->load("user/settings");
+    }
+
+    public function uploadImage()
+    {
+        try {
+            $user_model = new UserModel();
+
+            if (isset($_COOKIE['author']) && !empty($_COOKIE['author'])) {
+                $email = htmlspecialchars($_COOKIE['author']);
+                $avatar = $_POST['avatar'];
+                $user_model->setAvatar($email, $avatar);
+                header('Location: index?route=user/user/profile');
+            }
+        } catch (\Exception $e) {
+            //throw $th;
+        }
     }
 }

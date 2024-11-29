@@ -1,3 +1,4 @@
+
 function showNotification($message, $type = 'success')
 {
     $colorClass = "";
@@ -29,3 +30,5 @@ function showNotification($message, $type = 'success')
         }, 5000);
     });
 }
+ 
+

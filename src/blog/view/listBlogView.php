@@ -1,4 +1,4 @@
-<?php $checked = false ?>
+<?php  ?>
 
 <div class="p-4 flex flex-col" id="form-list-blog">
     <div class="flex justify-between items-center">

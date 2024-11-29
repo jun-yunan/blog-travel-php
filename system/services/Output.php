@@ -46,6 +46,13 @@ class Output
         echo $content;
     }
 
+    public function loadNotHeaderFooter(string $route, array $data = array()): void
+    {
+        $route_paths = explode("/", $route);
+        $content = $this->loadFile('src/' . $route_paths[0] . '/view/' . $route_paths[1] . 'View.php', $data);
+        echo $content;
+    }
+
     /**
      * Load a template, replaces the brackets for the variables in the array $data, and returns
      * the template as String

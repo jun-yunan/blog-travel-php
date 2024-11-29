@@ -19,7 +19,7 @@
         <button type="submit" class="btn btn-primary w-full self-end">Sign Up</button>
         <div class="flex mx-auto items-center text-base text-gray-600">
             <p>Don't have an account? </p>
-            <a href="index.php?route=user/user/register" class="text-blue-500">Sign In</a>
+            <a href="index.php?route=user/user/login" class="text-blue-500">Sign In</a>
         </div>
     </form>
 </div>
