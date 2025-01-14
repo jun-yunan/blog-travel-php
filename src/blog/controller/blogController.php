@@ -10,8 +10,81 @@ class BlogController extends Base
     public function index(): void
     {
         $blog_model = new BlogModel();
+
         $data = array();
-        $data['blogs'] = $blog_model->getAllBlogs();
+
+        $limit = 10;
+
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+        $offset = ($page - 1) * $limit;
+
+        $data['blogs'] = $blog_model->getAllBlogs($limit, $offset);
+
+        $total_blogs = $blog_model->countAllBlogs();
+
+        $total_pages = ceil($total_blogs / $limit);
+
+        $data['total_pages'] = $total_pages;
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            try {
+                $blog_model->deleteBlogById($id);
+                $_SESSION['message'] = "Blog deleted successfully";
+            } catch (\Exception $e) {
+                $_SESSION['error'] = "Error deleting blog" . $e->getMessage();
+            }
+            header('Location: index.php?route=blog/blog/index');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $keyword = $_GET['keyword'];
+            if ($keyword) {
+                $result = $blog_model->searchBlog($keyword);
+                $data['blogs'] = empty($result) ? array() : (isset($result[0]) ? $result : array($result));
+            } else {
+                $data['blogs'] = $blog_model->getAllBlogs($limit, $offset);
+            }
+        }
+        $this->output->addJs('/js/Notify');
+        $this->output->load("blog/listBlog", $data);
+    }
+
+    public function dashboard(): void
+    {
+        $blog_model = new BlogModel();
+        $data = array();
+        $limit = 10;
+
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+        $offset = ($page - 1) * $limit;
+        $data['blogs'] = $blog_model->getAllBlogs($limit, $offset);
+        $this->output->load("blog/dashboard", $data);
+    }
+
+    public function redirectToDashboard(): void
+    {
+        header('Location: /dashboard');
+    }
+
+    public function notAdmin(): void
+    {
+        header('Location: /');
+    }
+
+    public function admin(): void
+    {
+        $blog_model = new BlogModel();
+        $data = array();
+        $limit = 10;
+
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+        $offset = ($page - 1) * $limit;
+        $data['blogs'] = $blog_model->getAllBlogs($limit, $offset);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             try {

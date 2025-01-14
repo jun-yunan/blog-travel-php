@@ -6,10 +6,12 @@
  */
 
 return [
-    "/" => "blog/blog/index",
+    "/" => "blog/blog/redirectToDashboard",
+    "/dashboard" => "blog/blog/dashboard",
     "/welcome" => "welcome/welcome/index",
     "/product" => "product/product/samplePage",
     "/blog" => "blog/blog/index",
+    "/blog/admin" => isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin' ? "blog/blog/admin" : "blog/blog/notAdmin",
     "/update-blog" => "blog/blog/updateBlog",
     "/create-blog" => "blog/blog/createBlog",
     "/cap-nhat-thong-tin" => 'blog/blog/createOrUpdateBlog',
@@ -19,4 +21,5 @@ return [
     "/user/profile" => "user/user/profile",
     "/user/settings" => "user/user/settings",
     "/user/upload-image" => "user/user/uploadImage",
+    "/user/admin" => isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin' ? "user/user/admin" : "user/user/notAdmin",
 ];

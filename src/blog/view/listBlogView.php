@@ -1,8 +1,17 @@
 <?php  ?>
 
+
 <div class="p-4 flex flex-col" id="form-list-blog">
+
     <div class="flex justify-between items-center">
-        <h3 class="text-3xl font-bold underline text-purple-500 mb-6">Danh sách Blog</h3>
+        <div class='flex flex-col items-start'>
+            <h3 class="text-3xl font-bold underline text-purple-500 mb-6">Danh sách Blog</h3>
+
+            <form method="GET" class="flex flex-col items-start gap-y-2">
+                <input class="w-[380px]" type="text" name="keyword" placeholder="search blog by id, title, content, tag.">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
         <?php if ($checked == true): ?>
             <button type="button" class="btn btn-danger">Delete</button>
         <?php endif; ?>
@@ -67,6 +76,12 @@
             <?php endif; ?>
         </tbody>
     </table>
+
+    <div>
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+        <?php endfor; ?>
+    </div>
 </div>
 
 

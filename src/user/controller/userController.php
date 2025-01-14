@@ -21,8 +21,19 @@ class UserController extends Base
     {
         setcookie('auth', '', time() - 3600, '/');
         setcookie('author', '', time() - 3600, '/');
-        header('Location: index?route=user/user/sign-in');
+        header('Location: /user/sign-in');
         exit();
+    }
+
+    public function admin(): void
+    {
+        $this->output->load("user/admin");
+    }
+
+    public function notAdmin(): void
+    {
+        // $this->output->load("user/notAdmin");
+        header('Location: /');
     }
 
     public function profile(): void

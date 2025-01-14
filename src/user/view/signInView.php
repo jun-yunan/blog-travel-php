@@ -1,10 +1,4 @@
-<?php $toggle_eye = "text"; ?>
-
-
 <!DOCTYPE html>
-
-
-
 <html>
 
 <head>
@@ -23,8 +17,6 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
     <link href="/global.css" rel="stylesheet">
     <script src="/app.js"></script>
 </head>
@@ -33,10 +25,10 @@
     <div class="w-full h-full flex items-center justify-center">
         <div class="w-[80%] h-[80%] relative flex items-center border border-gray-500 rounded-lg shadow-md overflow-hidden">
             <div class="w-[50%] h-full relative">
-                <div class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
+                <a href="/" class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <p>back</p>
-                </div>
+                </a>
                 <div class="swiper w-full h-full">
                     <div class="swiper-wrapper w-full h-full">
                         <div class="swiper-slide flex items-center justify-center">
@@ -173,10 +165,18 @@
                 withCredentials: true
             }).then((response) => {
                 console.log(response);
-                location.href = 'index.php?route=blog/blog/index';
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed in successfully',
+                });
+                location.href = '/';
             }).catch((error) => {
                 console.log(error);
-                alert('Error[Sign in fail]');
+                // alert('Error[Sign in fail]');
+                Toast.fire({
+                    icon: 'error',
+                    title: `${error.response.status} ${error.response.data.message}`,
+                });
             });
         });
     </script>

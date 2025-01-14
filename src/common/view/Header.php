@@ -16,6 +16,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link href="/global.css" rel="stylesheet">
     <script src="/app.js"></script>
 </head>
@@ -68,7 +72,7 @@
             </a>
 
             <div id="" class="flex-1 flex items-center justify-center gap-x-6">
-                <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=blog/blog/index">DASHBOARD</a>
+                <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="/">DASHBOARD</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=blog/blog/createBlog">WRITE BLOG</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=product/product/sample">ABOUT</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=product/product/sample">CONTACT</a>
@@ -85,12 +89,18 @@
                             <p class="cursor-default font-medium text-sky-600"><?php echo htmlspecialchars($_COOKIE['author']) ?></p>
                         </li>
                         <div class="dropdown-divider"></div>
+                        <?php if (isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin'): ?>
+                            <li><a class="dropdown-item" href="/user/admin">User Admin</a></li>
+                        <?php endif; ?>
+                        <?php if (isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin'): ?>
+                            <li><a class="dropdown-item" href="/blog/admin">Blog Admin</a></li>
+                        <?php endif; ?>
                         <li><a class="dropdown-item" href="index?route=user/user/profile">Profile</a></li>
                         <li><a class="dropdown-item" href="index?route=user/user/settings">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Dark mode</a></li>
                         <div class="dropdown-divider"></div>
                         <li>
-                            <a class="dropdown-item" href="index?route=user/user/logout">
+                            <a class="dropdown-item" href="/user/logout">
                                 <div class="flex items-center gap-x-2">
                                     <i class="fa-solid fa-right-from-bracket text-rose-600"></i>
                                     <p class="text-rose-600 font-semibold text-base">Logout</p>
@@ -117,5 +127,5 @@
         <li><a href="index.php?route=product/product/otherMethod">Not found page</a></li>
     </ul> -->
 
-    <div class="mt-[60px] w-full">
+    <div class="mt-[60px] w-full h-full">
         <!-- <div id="main" class="main"> -->

@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta author="David Baqueiro">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog Travel | Sign In</title>
+    <title>Blog Travel | Sign Up</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -33,10 +33,10 @@
     <div class="w-full h-full flex items-center justify-center">
         <div class="w-[80%] h-[80%] relative flex items-center border border-gray-500 rounded-lg shadow-md overflow-hidden">
             <div class="w-[50%] h-full relative">
-                <div class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
+                <a href="/" class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <p>back</p>
-                </div>
+                </a>
                 <div class="swiper w-full h-full">
                     <div class="swiper-wrapper w-full h-full">
                         <div class="swiper-slide flex items-center justify-center">
@@ -63,10 +63,23 @@
             </div>
 
             <div class="w-[50%] h-full">
-                <form id="form-login" class="w-full h-full px-12 py-6 space-y-8 flex flex-col">
+                <form id="form-sign-up" class="w-full h-full px-12 py-6 space-y-4 flex flex-col">
                     <div class="w-full flex flex-col self-start">
-                        <h1 class="text-lg font-semibold">Sign In</h1>
-                        <!-- <p></p> -->
+                        <h1 class="text-xl font-semibold text-gray-700">Create an account</h1>
+                    </div>
+                    <div class="w-full flex items-center gap-x-4">
+                        <div class="flex flex-col w-full">
+                            <label for="" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <div class="flex items-center mt-1 w-full py-1 border border-gray-300 rounded-md shadow-sm">
+                                <input name="firstName" type="text" placeholder="Enter your first name..." class="bg-transparent border-none focus:ring-0 w-full" />
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <label for="" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <div class="flex items-center mt-1 w-full py-1 border border-gray-300 rounded-md shadow-sm">
+                                <input name="lastName" type="text" placeholder="Enter your last name..." class="bg-transparent border-none focus:ring-0 w-full" />
+                            </div>
+                        </div>
                     </div>
                     <div class="flex flex-col">
                         <label for="" class="block text-sm font-medium text-gray-700">Email</label>
@@ -87,10 +100,10 @@
                         </div>
 
                     </div>
-                    <button type="submit" class="btn btn-primary w-full self-end">Sign In</button>
+                    <button type="submit" class="btn btn-primary w-full self-end">Sign Up</button>
                     <div class="w-full flex items-center gap-x-2">
                         <div class="flex-1 h-px bg-gray-300"></div>
-                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Or sign in with</p>
+                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Or sign up with</p>
                         <div class="flex-1 h-px bg-gray-300"></div>
                     </div>
 
@@ -106,8 +119,10 @@
                     </div>
 
                     <div class="flex mx-auto items-center text-base text-gray-600">
-                        <p>Don't have an account? </p>
-                        <a href="index.php?route=user/user/register" class="text-blue-500">Register</a>
+                        <p>
+                            Already have an account?
+                        </p>
+                        <a href="/user/sign-in" class="text-blue-500">Sign In</a>
                     </div>
                 </form>
             </div>
@@ -163,20 +178,30 @@
             }
         });
 
-        const form = document.querySelector('#form-login');
+        const form = document.querySelector('#form-sign-up');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
+            data['name'] = `${data.firstName} ${data.lastName}`;
+            delete data.firstName;
+            delete data.lastName;
             console.log(data);
-            await axios.post('http://localhost:3001/api/users/sign-in', data, {
-                withCredentials: true
-            }).then((response) => {
+
+
+            await axios.post('http://localhost:3001/api/users/sign-up', data).then((response) => {
                 console.log(response);
-                location.href = 'index.php?route=blog/blog/index';
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Sign Up Successfully',
+                });
+                location.href = '/user/sign-in';
             }).catch((error) => {
-                console.log(error);
-                alert('Error[Sign in fail]');
+                console.log(error.response.data.message);
+                Toast.fire({
+                    icon: 'error',
+                    title: `${error.response.status} ${error.response.data.message}`,
+                });
             });
         });
     </script>
