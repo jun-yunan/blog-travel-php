@@ -7,6 +7,8 @@
 
 return [
     "/" => "blog/blog/redirectToDashboard",
+    "/login" => "user/user/login",
+    "/logout" => "user/user/logout",
     "/dashboard" => "blog/blog/dashboard",
     "/welcome" => "welcome/welcome/index",
     "/product" => "product/product/samplePage",

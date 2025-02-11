@@ -17,13 +17,13 @@ class UserController extends Base
         $this->output->loadNotHeaderFooter("user/signUp");
     }
 
-    public function logout(): void
-    {
-        setcookie('auth', '', time() - 3600, '/');
-        setcookie('author', '', time() - 3600, '/');
-        header('Location: /user/sign-in');
-        exit();
-    }
+    // public function logout(): void
+    // {
+    //     setcookie('auth', '', time() - 3600, '/');
+    //     setcookie('author', '', time() - 3600, '/');
+    //     header('Location: /user/sign-in');
+    //     exit();
+    // }
 
     public function admin(): void
     {
@@ -67,5 +67,57 @@ class UserController extends Base
         } catch (\Exception $e) {
             //throw $th;
         }
+    }
+
+
+
+
+
+    public function login()
+    {
+        $this->output->addJs('js/Notify');
+        $user_model = new UserModel();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $loginMode = $_POST['loginMode'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            if ($loginMode === 'true') {
+                $user = $user_model->getUser($username, $password);
+                if ($user) {
+                    session_regenerate_id(true);
+                    $this->session->set('logged', true);
+                    header('Location: /dashboard');
+                    exit;
+                } else {
+                    $_SESSION['error-message'] = 'Sai tên đăng nhập hoặc mật khẩu';
+                    $this->output->load('user/loginOrRegister');
+                }
+            } else if ($loginMode === 'false') {
+                try {
+                    $user = $user_model->register($username, $password);
+                    if ($user) {
+                        $_SESSION['message'] = 'Đăng ký thành công';
+                    } else {
+                        $_SESSION['error'] = 'Tên đăng nhập đã tồn tại';
+                    }
+                } catch (\Exception $e) {
+                    $this->console->addDebugInfo("Error during register: " . $e->getMessage());
+                    //throw $th;
+                    $_SESSION['error'] = 'Có lỗi xảy ra. Vui lòng thử lại';
+                }
+
+                header('Location: /');
+                exit;
+            }
+        } else {
+            $this->output->load('user/loginOrRegister');
+        }
+    }
+
+    public function logout()
+    {
+        unset($_SESSION['logged']);
+        header('Location: /');
     }
 }

@@ -76,6 +76,9 @@
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=blog/blog/createBlog">WRITE BLOG</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=product/product/sample">ABOUT</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=product/product/sample">CONTACT</a>
+                <?php if (isset($_SESSION['logged']) && $_SESSION['logged']): ?>
+                    <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=user/user/logout">Đăng Xuất</a>
+                <?php endif; ?>
             </div>
             <?php if (isset($_COOKIE['auth'])): ?>
                 <div class="dropdown">

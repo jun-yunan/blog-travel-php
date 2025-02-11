@@ -44,4 +44,33 @@ class UserModel extends Base
         $sql = "UPDATE `user` SET avatar = '$avatar' WHERE email = '$email'";
         return $this->database->query($sql);
     }
+
+    public function getUser($username, $password)
+    {
+        $query = "SELECT * FROM user WHERE username = :username AND password = :password";
+        $params = array("username" => $username, "password" => md5(($password)));
+
+        return $this->database->query($query, $params);
+    }
+
+    public function isUsernameTaken($username)
+    {
+        $query = "SELECT COUNT(*) FROM user WHERE username = :username";
+        $params = array("username" => $username);
+        $result = $this->database->query($query, $params);
+        return $result['COUNT(*)'] > 0;
+    }
+
+    public function register($username, $password)
+    {
+        $existUser = $this->isUsernameTaken($username);
+        if ($existUser) {
+            return false;
+        } else {
+            $hashedPassword = md5($password);
+            $query = "INSERT INTO user (username, password) VALUES (:username, :password)";
+            $params = array("username" => $username, "password" => $hashedPassword);
+            return $this->database->query($query, $params);
+        }
+    }
 }
