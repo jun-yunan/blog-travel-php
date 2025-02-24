@@ -51,11 +51,16 @@
     } ?>
     <header class="fixed z-50 top-0 left-0 right-0 h-[78px] bg-white mb-[78px] shadow-md flex items-center w-full justify-center">
         <div class="w-full flex items-center mx-[150px]">
-            <a class="text-2xl font-semibold text-black rounded-full overflow-hidden">
+            <!-- <a class="text-2xl font-semibold text-black rounded-full overflow-hidden">
                 <img src="./assets/images/logo.jpg" class="object-cover" width="48" height="48" alt="">
+            </a> -->
+
+            <a href="/" class="text-3xl font-semibold flex">
+                <p class="text-green-500">B</p>
+                <p class="text-gray-800">LOGTRAVELS</p>
             </a>
 
-            <div id="" class="flex-1 flex items-center justify-center gap-x-6">
+            <!-- <div id="" class="flex-1 flex items-center justify-center gap-x-6">
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="/">DASHBOARD</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=blog/blog/createBlog">WRITE BLOG</a>
                 <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=product/product/sample">ABOUT</a>
@@ -63,14 +68,29 @@
                 <?php if (isset($_SESSION['logged']) && $_SESSION['logged']): ?>
                     <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=user/user/logout">Đăng Xuất</a>
                 <?php endif; ?>
+            </div> -->
+
+            <div class="flex-1 flex items-center justify-center">
+                <form action="/blog/search" method="GET">
+                    <div class="relative">
+                        <button type="submit" class="absolute top-0 right-0 bottom-0 px-4 py-2 bg-green-500 text-white rounded-full">
+                            <i class="fa-solid fa-search"></i>
+                        </button>
+                        <input type="text" name="q" class="w-[400px] h-[40px] px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus-within:outline-green-500 focus-visible:outline-green-500 focus-within:ring-0 focus:outline-green-500" placeholder="Search..." />
+                    </div>
+                </form>
             </div>
+
             <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
                 <div class="dropdown">
                     <div class="flex items-center gap-x-2 cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="p-2 cursor-pointer hover:bg-gray-300 transition duration-500 rounded-full bg-gray-200">
-                            <img width="30" height="30" src="https://img.icons8.com/parakeet-line/96/user.png" alt="user" />
+                        <div class="flex items-end flex-col">
+                            <p class=" text-gray-800 text-base font-semibold"><?php echo htmlspecialchars($_SESSION['user']['name']) ?></p>
+                            <p class="text-gray-500 text-sm font-light">Phiêu lưu mạo hiểm</p>
                         </div>
-                        <p class="text-gray-800 text-sm font-semibold"><?php echo htmlspecialchars($_SESSION['user']['name']) ?></p>
+                        <div class="p-2 cursor-pointer hover:bg-gray-300 transition duration-500 rounded-full bg-gray-200">
+                            <img width="42" height="42" src="https://img.icons8.com/parakeet-line/96/user.png" alt="user" />
+                        </div>
                     </div>
 
                     <ul class="dropdown-menu">
