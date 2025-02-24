@@ -22,20 +22,44 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
     <link href="/global.css" rel="stylesheet">
-    <script src="/app.js"></script>
+    <!-- <script src="/app.js"></script> -->
 </head>
 
 <body>
-    <div class="w-full h-full flex items-center justify-center">
+    <?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (isset($_SESSION['toast'])) {
+        $toast = $_SESSION['toast'];
+        unset($_SESSION['toast']); // Xóa sau khi hiển thị
+    ?>
+        <script>
+            Toastify({
+                text: "<?= $toast['message'] ?>",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "<?= $toast['type'] === 'success' ? '#22c55e' : '#ef4444' ?>",
+                stopOnFocus: true
+            }).showToast();
+        </script>
+    <?php } ?>
+
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+        $user = $_SESSION['user'];
+    } ?>
+    <div class="w-full h-[100vh] flex items-center justify-center">
         <div class="w-[80%] h-[80%] relative flex items-center border border-gray-500 rounded-lg shadow-md overflow-hidden">
             <div class="w-[50%] h-full relative">
                 <a href="/" class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
                     <ion-icon name="arrow-back-outline"></ion-icon>
-                    <p>back</p>
+                    <p>Trở về</p>
                 </a>
                 <div class="swiper w-full h-full">
                     <div class="swiper-wrapper w-full h-full">
@@ -63,21 +87,15 @@
             </div>
 
             <div class="w-[50%] h-full">
-                <form id="form-sign-up" class="w-full h-full px-12 py-6 space-y-4 flex flex-col">
+                <form action="" method="POST" id="form-sign-up" class="w-full h-full px-12 py-6 space-y-4 flex flex-col">
                     <div class="w-full flex flex-col self-start">
-                        <h1 class="text-xl font-semibold text-gray-700">Create an account</h1>
+                        <h1 class="text-xl font-semibold text-gray-700">Tạo tài khoản</h1>
                     </div>
                     <div class="w-full flex items-center gap-x-4">
                         <div class="flex flex-col w-full">
-                            <label for="" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <label for="" class="block text-sm font-medium text-gray-700">Họ tên</label>
                             <div class="flex items-center mt-1 w-full py-1 border border-gray-300 rounded-md shadow-sm">
-                                <input name="firstName" type="text" placeholder="Enter your first name..." class="bg-transparent border-none focus:ring-0 w-full" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <label for="" class="block text-sm font-medium text-gray-700">Last Name</label>
-                            <div class="flex items-center mt-1 w-full py-1 border border-gray-300 rounded-md shadow-sm">
-                                <input name="lastName" type="text" placeholder="Enter your last name..." class="bg-transparent border-none focus:ring-0 w-full" />
+                                <input name="fullname" type="text" placeholder="Nhập họ tên..." class="bg-transparent border-none focus:ring-0 w-full" />
                             </div>
                         </div>
                     </div>
@@ -85,11 +103,11 @@
                         <label for="" class="block text-sm font-medium text-gray-700">Email</label>
                         <div class="flex items-center mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm">
                             <ion-icon name="mail-outline"></ion-icon>
-                            <input name="email" type="email" placeholder="Enter your email..." class="bg-transparent border-none focus:ring-0 w-full" />
+                            <input name="email" type="email" placeholder="Nhập địa chỉ email..." class="bg-transparent border-none focus:ring-0 w-full" />
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="block text-sm font-medium text-gray-700">Password</label>
+                        <label for="" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
 
                         <div class="flex items-center mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm">
                             <ion-icon name="key-outline" class="mr-2"></ion-icon>
@@ -100,10 +118,10 @@
                         </div>
 
                     </div>
-                    <button type="submit" class="btn btn-primary w-full self-end">Sign Up</button>
+                    <button type="submit" class="btn btn-primary w-full self-end">Đăng ký</button>
                     <div class="w-full flex items-center gap-x-2">
                         <div class="flex-1 h-px bg-gray-300"></div>
-                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Or sign up with</p>
+                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Hoặc đăng ký với</p>
                         <div class="flex-1 h-px bg-gray-300"></div>
                     </div>
 
@@ -120,15 +138,15 @@
 
                     <div class="flex mx-auto items-center text-base text-gray-600">
                         <p>
-                            Already have an account?
+                            Đã có tài khoản?
                         </p>
-                        <a href="/user/sign-in" class="text-blue-500">Sign In</a>
+                        <a href="/user/sign-in" class="text-blue-500">Đăng nhập</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script>
+    <!-- <script>
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -145,8 +163,8 @@
                 title: 'Signed in successfully',
             });
         });
-    </script>
-    <script>
+    </script> -->
+    <!-- <script>
         const swiper = new Swiper('.swiper', {
             loop: true,
             autoplay: {
@@ -162,8 +180,8 @@
                 prevEl: '.swiper-button-prev',
             },
         });
-    </script>
-    <script>
+    </script> -->
+    <!-- <script>
         const buttonToggleEye = document.querySelector('#button-toggle-eye');
         const inputPassword = document.querySelector('#input-password');
         const toggleIcon = document.querySelector('#toggle-icon');
@@ -204,7 +222,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

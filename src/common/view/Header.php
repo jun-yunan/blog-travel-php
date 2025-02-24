@@ -19,53 +19,37 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link href="/global.css" rel="stylesheet">
-    <script src="/app.js"></script>
 </head>
 
+
 <body>
-
     <?php
-    // Custom CSS/JS
-    // foreach ($this->output_styles as $style_file) {
-    //     echo $style_file;
-    // }
-    // foreach ($this->output_scripts as $script_file) {
-    //     echo $script_file;
-    // }
-    // 
-    ?>
-
-    <?php
-    if (isset($_COOKIE['auth'])) {
-        echo "Chào mừng " . htmlspecialchars($_COOKIE['username']) . ", bạn đã đăng nhập!";
-    } else {
-        echo "Bạn chưa đăng nhập. Vui lòng đăng nhập!";
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
     }
+    if (isset($_SESSION['toast'])) {
+        $toast = $_SESSION['toast'];
+        unset($_SESSION['toast']); // Xóa sau khi hiển thị
     ?>
+        <script>
+            Toastify({
+                text: "<?= $toast['message'] ?>",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "<?= $toast['type'] === 'success' ? '#22c55e' : '#ef4444' ?>",
+                stopOnFocus: true
+            }).showToast();
+        </script>
+    <?php } ?>
 
-
-    <script>
-        async function getUserByEmail() {
-            try {
-                const response = await axios.get('http://localhost:3001/api/users/<?php echo $_COOKIE['author'] ?>', {
-                    withCredentials: true,
-                })
-                if (response.status === 200) {
-                    console.log(response.data);
-                }
-            } catch (error) {
-                console.log(error);
-
-            }
-        }
-
-        getUserByEmail();
-    </script>
-
-
-    <nav class="fixed z-50 top-0 left-0 right-0 h-[60px] bg-white mb-[60px] shadow-md flex items-center w-full justify-center">
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+        $user = $_SESSION['user'];
+    } ?>
+    <header class="fixed z-50 top-0 left-0 right-0 h-[78px] bg-white mb-[78px] shadow-md flex items-center w-full justify-center">
         <div class="w-full flex items-center mx-[150px]">
             <a class="text-2xl font-semibold text-black rounded-full overflow-hidden">
                 <img src="./assets/images/logo.jpg" class="object-cover" width="48" height="48" alt="">
@@ -80,18 +64,20 @@
                     <a class="text-neutral-600 font-medium text-base hover:text-blue-700 hover:bg-sky-200 transition duration-500 px-6 py-2 rounded-lg" href="index.php?route=user/user/logout">Đăng Xuất</a>
                 <?php endif; ?>
             </div>
-            <?php if (isset($_COOKIE['auth'])): ?>
+            <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
                 <div class="dropdown">
-                    <div class="p-2 cursor-pointer hover:bg-gray-300 transition duration-500 rounded-full bg-gray-200" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img width="30" height="30" src="https://img.icons8.com/parakeet-line/96/user.png" alt="user" />
-
+                    <div class="flex items-center gap-x-2 cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="p-2 cursor-pointer hover:bg-gray-300 transition duration-500 rounded-full bg-gray-200">
+                            <img width="30" height="30" src="https://img.icons8.com/parakeet-line/96/user.png" alt="user" />
+                        </div>
+                        <p class="text-gray-800 text-sm font-semibold"><?php echo htmlspecialchars($_SESSION['user']['name']) ?></p>
                     </div>
 
                     <ul class="dropdown-menu">
                         <li class="px-2">
                             <p class="cursor-default font-medium text-sky-600"><?php echo htmlspecialchars($_COOKIE['author']) ?></p>
                         </li>
-                        <div class="dropdown-divider"></div>
+                        <!-- <div class="dropdown-divider"></div> -->
                         <?php if (isset($_COOKIE['role']) && $_COOKIE['role'] == 'admin'): ?>
                             <li><a class="dropdown-item" href="/user/admin">User Admin</a></li>
                         <?php endif; ?>
@@ -118,17 +104,7 @@
                 </a>
             <?php endif; ?>
         </div>
-    </nav>
+    </header>
 
-    <!-- <ul id="slide-out" class="sidenav">
-        <br><br>
-        <li><a href="/welcome">Welcome</a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a href="index.php?route=product/product/samplePage">Sample</a></li>
-        <li><a href="index.php?route=product/product/otherMethod">Not found page</a></li>
-    </ul> -->
-
-    <div class="mt-[60px] w-full h-full">
+    <div class="mt-[100px] w-full h-full">
         <!-- <div id="main" class="main"> -->

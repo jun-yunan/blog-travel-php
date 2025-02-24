@@ -25,6 +25,7 @@
         </div>
 
     </footer>
+
     <script>
         const Toast = Swal.mixin({
             toast: true,

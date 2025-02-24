@@ -16,18 +16,43 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <link href="/global.css" rel="stylesheet">
     <script src="/app.js"></script>
 </head>
 
 <body>
-    <div class="w-full h-full flex items-center justify-center">
+    <?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (isset($_SESSION['toast'])) {
+        $toast = $_SESSION['toast'];
+        unset($_SESSION['toast']); // Xóa sau khi hiển thị
+    ?>
+        <script>
+            Toastify({
+                text: "<?= $toast['message'] ?>",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "<?= $toast['type'] === 'success' ? '#22c55e' : '#ef4444' ?>",
+                stopOnFocus: true
+            }).showToast();
+        </script>
+    <?php } ?>
+
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+        $user = $_SESSION['user'];
+    } ?>
+    <div class="w-full h-[100vh] flex items-center justify-center">
         <div class="w-[80%] h-[80%] relative flex items-center border border-gray-500 rounded-lg shadow-md overflow-hidden">
             <div class="w-[50%] h-full relative">
                 <a href="/" class="absolute z-10 top-3 left-3 rounded-full cursor-pointer gap-x-1 bg-gray-500 hover:bg-gray-300 hover:text-gray-500 transition duration-500 text-gray-200 flex items-center justify-center px-4 py-1 text-sm font-medium">
                     <ion-icon name="arrow-back-outline"></ion-icon>
-                    <p>back</p>
+                    <p>Trở về</p>
                 </a>
                 <div class="swiper w-full h-full">
                     <div class="swiper-wrapper w-full h-full">
@@ -55,20 +80,20 @@
             </div>
 
             <div class="w-[50%] h-full">
-                <form id="form-login" class="w-full h-full px-12 py-6 space-y-8 flex flex-col">
+                <form id="form-login" action="/user/sign-in" method="POST" class="w-full h-full px-12 py-6 space-y-8 flex flex-col">
                     <div class="w-full flex flex-col self-start">
-                        <h1 class="text-lg font-semibold">Sign In</h1>
+                        <h1 class="text-lg font-semibold">Đăng Nhập</h1>
                         <!-- <p></p> -->
                     </div>
                     <div class="flex flex-col">
                         <label for="" class="block text-sm font-medium text-gray-700">Email</label>
                         <div class="flex items-center mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm">
                             <ion-icon name="mail-outline"></ion-icon>
-                            <input name="email" type="email" placeholder="Enter your email..." class="bg-transparent border-none focus:ring-0 w-full" />
+                            <input name="email" type="email" placeholder="Nhập địa chỉ email..." class="bg-transparent border-none focus:ring-0 w-full" />
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="block text-sm font-medium text-gray-700">Password</label>
+                        <label for="" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
 
                         <div class="flex items-center mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm">
                             <ion-icon name="key-outline" class="mr-2"></ion-icon>
@@ -79,10 +104,10 @@
                         </div>
 
                     </div>
-                    <button type="submit" class="btn btn-primary w-full self-end">Sign In</button>
+                    <button type="submit" class="btn btn-primary w-full self-end">Đăng Nhập</button>
                     <div class="w-full flex items-center gap-x-2">
                         <div class="flex-1 h-px bg-gray-300"></div>
-                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Or sign in with</p>
+                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Hoặc đăng nhập với</p>
                         <div class="flex-1 h-px bg-gray-300"></div>
                     </div>
 
@@ -98,14 +123,14 @@
                     </div>
 
                     <div class="flex mx-auto items-center text-base text-gray-600">
-                        <p>Don't have an account? </p>
-                        <a href="/user/sign-up" class="text-blue-500">Register</a>
+                        <p>Chưa có tài khoản? </p>
+                        <a href="/user/sign-up" class="text-blue-500">Đăng ký</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script>
+    <!-- <script>
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -179,7 +204,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
